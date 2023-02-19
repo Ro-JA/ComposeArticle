@@ -12,6 +12,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -28,10 +29,9 @@ class MainActivity : ComponentActivity() {
             ComposeArticleTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-
+                    ComposeArticleApp()
                 }
             }
         }
@@ -39,8 +39,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ComposeArticleWithText(firstText: String, secondText: String, threeText: String) {
-    Column() {
+fun ComposeArticleApp() {
+    ArticleCards(
+        firstText = stringResource(R.string.first_text),
+        secondText = stringResource(id = R.string.second_text),
+        threeText = stringResource(id = R.string.three_text),
+        imagePainter = painterResource(id = R.drawable.bg_compose_background)
+    )
+}
+
+@Composable
+fun ArticleCards(
+    firstText: String, secondText: String, threeText: String,
+    imagePainter: Painter, modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+
+        Image(painter = imagePainter, contentDescription = null)
 
         Text(
             text = firstText,
@@ -48,7 +63,7 @@ fun ComposeArticleWithText(firstText: String, secondText: String, threeText: Str
             modifier = Modifier
                 .padding(all = 16.dp),
 
-        )
+            )
 
         Text(
             text = secondText,
@@ -68,30 +83,14 @@ fun ComposeArticleWithText(firstText: String, secondText: String, threeText: Str
     }
 }
 
-@Composable
-fun ComposeArticleWithImage(
-    firstText: String, secondText: String, threeText: String,
-    modifier: Modifier = Modifier
-) {
-    val image = painterResource(R.drawable.bg_compose_background)
-    Column {
-        Image(
-            painter = image,
-            contentDescription = null
-        )
-        ComposeArticleWithText(firstText = stringResource(R.string.first_text),
-            secondText = stringResource(R.string.second_text),
-            threeText = stringResource(R.string.three_text))
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun ComposeArticlePreview() {
-    ComposeArticleWithImage(
-        stringResource(R.string.first_text), stringResource(
-            R.string.second_text
-        ), stringResource(R.string.three_text)
-    )
 
+    ComposeArticleTheme {
+        Surface {
+            ComposeArticleApp()
+        }
+    }
 }
